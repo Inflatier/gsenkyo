@@ -1,14 +1,16 @@
 <head>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>gsenkyo</title>
 </head>
 
 <body>
-  <h1>Welcome to Meteor!</h1>
-
-  {{> hello}}
+  {{> title}}
 </body>
 
-<template name="hello">
-  <button>Click Me</button>
-  <p>You've pressed the button {{counter}} times.</p>
+<template name="title">
+  <h1 class="title">G-Senkyo</h1>
+  <div class="menu-buttons">
+    <button>ゲームを作る</button>
+    <button>ゲームに参加</button>
+  </div>
 </template>
