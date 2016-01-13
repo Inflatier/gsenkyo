@@ -1,17 +1,22 @@
-if (Meteor.isClient) {
-  // counter starts at 0
-  Session.setDefault('counter', 0);
+var db = {};
+db.logs = new Mongo.Collection('logs');
 
-  Template.hello.helpers({
-    counter: function () {
-      return Session.get('counter');
-    }
+if (Meteor.isClient) {
+
+  Template.body.helpers({
+    creating: true
   });
 
   Template.title.events({
     'click button': function () {
       // increment the counter when button is clicked
       Session.set('counter', Session.get('counter') + 1);
+    }
+  });
+
+  Template.logs.helpers({
+    logs: function () {
+      return db.logs.find({});
     }
   });
 }

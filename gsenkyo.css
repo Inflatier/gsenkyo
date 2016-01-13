@@ -16,16 +16,64 @@ body, section, h1, h2, h3, p, div {
     margin: 30px auto;
 }
 
-button {
+.menu-buttons button {
     display: block;
-    width: 96%;
+    width: 94%;
     font-size: 24px;
     margin: 0 auto 20px;
     background-color: rgba(0,0,0,.0);
     border: 1px solid hsl(210, 100%, 50%);
-    border-radius: 8px;
+    border-radius: 6px;
     color: rgb(80, 80, 88);
     color: hsl(210, 100%, 50%);
     padding: 4px;
     /*box-shadow: 0 10px 6px -7px rgba(0,0,0,.3);*/
+}
+
+div.logs {
+  overflow: scroll;
+  margin: 0 8px;
+  border: 1px solid gray;
+  border-radius: 6px;
+  height: 300px;
+  padding: 4px;
+}
+
+div.create {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: hsl(0, 0%, 100%);
+}
+
+div.create label, input{
+  display: block;
+}
+
+div.create input.name,
+div.create input.number,
+div.create input.password {
+  width: 92%;
+}
+
+div.create label {
+  width: 92%;
+  margin: 0px auto 5px;
+  font-size: 24px;
+}
+
+div.create input {
+  border-radius: 6px;
+  border: 1px solid gray;
+  margin: 0px auto 20px;
+  font-size: 22px;
+}
+
+div.create input[type=submit] {
+  border: 1px solid hsl(210, 100%, 50%);
+  background-color: hsl(210, 100%, 50%);
+  color: white;
+  padding: 4px 24px;
+  margin: 0 auto;
 }

@@ -5,12 +5,41 @@
 
 <body>
   {{> title}}
+  {{#if creating}}
+    {{> create}}
+  {{/if}}
 </body>
 
 <template name="title">
   <h1 class="title">G-Senkyo</h1>
   <div class="menu-buttons">
-    <button>ゲームを作る</button>
-    <button>ゲームに参加</button>
+    <button class="create">ゲームを作る</button>
+    <button class="join">ゲームに参加</button>
+  </div>
+  <div class="logs">
+    <ul>
+      {{> logs}}
+    </ul>
+  </div>
+</template>
+
+<template name="logs">
+  {{#each logs}}
+    <li>{{title}}</li>
+  {{/each}}
+</template>
+
+<template name="create">
+  <div class="create">
+    <h1>ゲームを作る</h1>
+    <form>
+      <label>ゲーム名</label>
+      <input class="name" type="text" />
+      <label>参加人数</label>
+      <input class="number" type="number" />
+      <label>パスワード</label>
+      <input class="password" type="password" />
+      <input type="submit" value="作成" />
+    </form>
   </div>
 </template>
