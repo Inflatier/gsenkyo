@@ -4,7 +4,7 @@ db.logs = new Mongo.Collection('logs');
 if (Meteor.isClient) {
 
   Template.body.helpers({
-    creating: true
+    creating: false
   });
 
   Template.title.events({
