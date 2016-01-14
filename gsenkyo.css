@@ -50,45 +50,49 @@ div.create {
 }
 
 div.create h1 {
-    display: block;
-    width: 92%;
-    border-bottom: 1px solid hsl(210, 100%, 50%);
-    padding-bottom: 10px;
-    margin: 0 auto 20px;
-    text-align: center;
-}
-
-div.create label, input{
   display: block;
+  width: 92%;
+  font-weight: normal;
+  color: hsl(210, 100%, 50%);
+  border-bottom: 1px solid hsl(210, 100%, 50%);
+  padding-bottom: 10px;
+  margin: 0 auto 20px;
+  text-align: center;
 }
 
+div.create label,
 div.create input.name,
-div.create input.number,
-div.create input.password {
+div.create div.number,
+div.create input.password{
+  display: block;
   width: 92%;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 div.create label {
-  width: 92%;
-  margin: 0px auto 5px;
   font-size: 24px;
+  margin-bottom: 5px;
 }
 
 div.create input {
   border-radius: 6px;
   border: 1px solid gray;
-  margin: 0px auto 20px;
   font-size: 22px;
+  margin-bottom: 20px;
 }
 
-div.create input.number{
-  
+div.create input.number,
+div.create p.number {
+  display: inline;
 }
 
 div.create input[type=submit] {
+  display: block;
+  width: 72%;
   border: 1px solid hsl(210, 100%, 50%);
   background-color: hsl(210, 100%, 50%);
   color: white;
   padding: 4px 24px;
-  margin: 0 auto;
+  margin: 20px auto 0;
 }

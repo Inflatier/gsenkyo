@@ -4,19 +4,30 @@ db.logs = new Mongo.Collection('logs');
 if (Meteor.isClient) {
 
   Template.body.helpers({
-    creating: false
+    creating: function () {
+      return Session.get('creating');
+    }
   });
 
   Template.title.events({
     'click button': function () {
-      // increment the counter when button is clicked
       Session.set('counter', Session.get('counter') + 1);
+    },
+    'click button.create': function () {
+      Session.set('creating', true);
     }
   });
 
   Template.logs.helpers({
     logs: function () {
       return db.logs.find({});
+    }
+  });
+
+  Template.create.events({
+    'submit': function (e) {
+      e.preventDefault();
+      Session.set('creating', false);
     }
   });
 }
