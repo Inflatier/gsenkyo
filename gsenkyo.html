@@ -8,12 +8,15 @@
   {{#if creating}}
     {{> create}}
   {{/if}}
+  {{#if joining}}
+    {{> join}}
+  {{/if}}
 </body>
 
 <template name="title">
   <h1 class="title">G-Senkyo</h1>
   <div class="menu-buttons">
-    <button class="create">ゲームを作る</button>
+    <button class="create">部屋を作る</button>
     <button class="join">ゲームに参加</button>
   </div>
   <div class="logs">
@@ -25,7 +28,7 @@
 
 <template name="logs">
   {{#each logs}}
-    <li>{{title}}</li>
+    <li>{{name}}</li>
   {{/each}}
 </template>
 
@@ -44,5 +47,17 @@
       <input class="password" type="password" />
       <input type="submit" value="作成" />
     </form>
+  </div>
+</template>
+
+<template name="join">
+  <div class="join">
+    <h1>部屋一覧</h1>
+    <p class="description">参加する部屋を選んでください</p>
+    <ul>
+      {{#each rooms}}
+        <li>{{name}}</li>
+      {{/each}}
+    </ul>
   </div>
 </template>

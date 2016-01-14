@@ -1,17 +1,21 @@
 var db = {};
 db.logs = new Mongo.Collection('logs');
+db.rooms = new Mongo.Collection('rooms');
 
 if (Meteor.isClient) {
 
   Template.body.helpers({
     creating: function () {
       return Session.get('creating');
+    },
+    joining: function () {
+      return Session.get('joining');
     }
   });
 
   Template.title.events({
-    'click button': function () {
-      Session.set('counter', Session.get('counter') + 1);
+    'click button.join': function () {
+      Session.set('joining', true);
     },
     'click button.create': function () {
       Session.set('creating', true);
@@ -28,6 +32,12 @@ if (Meteor.isClient) {
     'submit': function (e) {
       e.preventDefault();
       Session.set('creating', false);
+    }
+  });
+
+  Template.join.helpers({
+    rooms: function () {
+      return db.rooms.find({});
     }
   });
 }
