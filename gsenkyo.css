@@ -130,7 +130,7 @@ div.join ul {
 }
 
 div.join ul li {
-  padding: 4px;
+  padding: 6px 16px;
   border-bottom: 1px dotted gray;
 }
 
