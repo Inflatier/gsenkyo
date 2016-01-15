@@ -4,25 +4,26 @@ db.rooms = new Mongo.Collection('rooms');
 
 
 if (Meteor.isClient) {
-
+  Session.setDefault('creating-room', false);
+  Session.setDefault('selecting-room', false);
   Meteor.subscribe('rooms');
   Meteor.subscribe('logs');
 
   Template.body.helpers({
-    creating: function () {
-      return Session.get('creating');
+    creatingRoom: function () {
+      return Session.get('creating-room');
     },
-    joining: function () {
-      return Session.get('joining');
+    selectingRoom: function () {
+      return Session.get('selecting-room');
     }
   });
 
   Template.title.events({
     'click button.join': function () {
-      Session.set('joining', true);
+      Session.set('selecting-room', true);
     },
     'click button.create': function () {
-      Session.set('creating', true);
+      Session.set('creating-room', true);
     }
   });
 
@@ -32,19 +33,34 @@ if (Meteor.isClient) {
     }
   });
 
-  Template.create.events({
+  Template.createRoom.events({
     'submit form': function (e, template) {
       e.preventDefault();
       var name = template.find('input.name').value;
       var password = template.find('input.password').value;
       db.rooms.insert({name: name, password: password});
-      Session.set('creating', false);
+      Session.set('creating-room', false);
     }
   });
 
-  Template.join.helpers({
+  Template.selectRoom.events({
+    'click li': function (e, template) {
+      Session.set('entrying', true);
+      Session.set('selectedRoom', this._id);
+    }
+  });
+
+  Template.selectRoom.helpers({
     rooms: function () {
       return db.rooms.find({});
+    },
+    entrying: function () {
+      return (Session.get('entrying')) ? 'visible' : '';
+    },
+    room: function () {
+      return db.rooms.findOne(
+        {_id: Session.get('selectedRoom')} )
+        .name;
     }
   });
 }
