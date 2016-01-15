@@ -1,16 +1,18 @@
 <head>
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="viewport" content="width=device-width,user-scalable=no" />
   <title>gsenkyo</title>
 </head>
 
 <body>
-  {{> title}}
-  {{#if creatingRoom}}
-    {{> createRoom}}
-  {{/if}}
-  {{#if selectingRoom}}
-    {{> selectRoom}}
-  {{/if}}
+  <div id="app-body">
+    {{> title}}
+    {{#if creatingRoom}}
+      {{> createRoom}}
+    {{/if}}
+    {{#if selectingRoom}}
+      {{> selectRoom}}
+    {{/if}}
+  </div>
 </body>
 
 <template name="title">
@@ -51,7 +53,7 @@
 </template>
 
 <template name="selectRoom">
-  <div class="select">
+  <div class="select {{entrying}}">
     <h1>部屋一覧</h1>
     <p class="description">参加する部屋を選んでください</p>
     <ul>

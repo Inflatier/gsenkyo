@@ -1,19 +1,24 @@
 /* CSS declarations go here */
 
 body {
-    width: 100%;
-    position: relative;
-    height: 100%;
+  width: 100%;
+  position: relative;
+  height: 100%;
+  overflow: hidden;
 }
 
 body, section, h1, h2, h3, p, div, ul, li {
-    padding: 0; margin: 0;
+  padding: 0; margin: 0;
+}
+
+#app-body {
+  overflow-x: hidden;
 }
 
 .title {
-    text-align: center;
-    color: rgb(80, 80, 88);
-    margin: 30px auto;
+  text-align: center;
+  color: rgb(80, 80, 88);
+  margin: 30px auto;
 }
 
 .menu-buttons button {

@@ -47,27 +47,31 @@ if (Meteor.isClient) {
     'click li': function (e, template) {
       Session.set('entrying', true);
       Session.set('selectedRoom', this._id);
+    },
+    'click .cancel': function () {
+      Session.set('entrying', false);
     }
   });
 
   Template.selectRoom.helpers({
     rooms: function () {
-      return db.rooms.find({});
+      return db.rooms.find({}, {name: 1});
     },
     entrying: function () {
-      return (Session.get('entrying')) ? 'visible' : '';
+      return (Session.get('entrying')) ? 'entrying' : '';
     },
     room: function () {
-      return db.rooms.findOne(
-        {_id: Session.get('selectedRoom')} )
-        .name;
+      var room = db.rooms.findOne(
+        {_id: Session.get('selectedRoom')});
+      return (room) ? room.name : '';
     }
   });
 }
 
 if (Meteor.isServer) {
   Meteor.startup(function () {
-    // code to run on server at startup
+    db.logs.update({}, {name: 'ここにログが入る予定'}, {upsert: true});
+    db.rooms.update({}, {name: '部屋の名前', password: 'PASSWORD_NO_JAPANESE'}, {upsert: true});
   });
 
 db.rooms.allow({
@@ -80,5 +84,9 @@ db.rooms.allow({
 
   Meteor.publish('rooms', function () {
     return db.rooms.find({});
+  });
+
+  Meteor.publish('logs', function () {
+    return db.logs.find({});
   });
 }
