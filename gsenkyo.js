@@ -150,7 +150,13 @@ if (Meteor.isClient) {
   Template.room.events({
     'click button.create': function () {
       Session.set('creating-manifest', true);
-    }
+    },
+    'click button.opendatas': function () {
+      location.href = "http://www.city.yokohama.lg.jp/seisaku/seisaku/opendata/catalog.html";
+    },
+    'click button.linkdata': function () {
+      location.href = "http://linkdata.org/work?sort=date&tag=CITY_140001#workList";
+    },
   });
 
 }
