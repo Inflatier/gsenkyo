@@ -79,6 +79,9 @@ if (Meteor.isClient) {
       var password = template.find('input.password').value;
       db.rooms.insert({name: name, password: password});
       Session.set('creating-room', false);
+    },
+    'click .cancel': function (e, template) {
+      Session.set('creating-room', false);
     }
   });
 
@@ -165,7 +168,7 @@ if (Meteor.isServer) {
 		password: 'pass',
 		players:[],
 	}, {upsert: true});
-	
+
   });
 
   // name, passwordがあるデータだけが保存できるようにする
