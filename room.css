@@ -17,6 +17,20 @@ div.room h1 {
   text-align: center;
 }
 
+.manifest-buttons button {
+  display: block;
+  width: 94%;
+  font-size: 19px;
+  margin: 0 auto 20px;
+  background-color: rgba(0,0,0,.0);
+  border: 1px solid hsl(210, 100%, 50%);
+  border-radius: 6px;
+  color: rgb(80, 80, 88);
+  color: hsl(210, 100%, 50%);
+  padding: 4px;
+  /*box-shadow: 0 10px 6px -7px rgba(0,0,0,.3);*/
+}
+
 div.create-manifest {
   position: absolute;
   width: 100%; height: 100%;

@@ -78,7 +78,7 @@ if (Meteor.isClient) {
     */
     'click li': function (e, template) {
       Session.set('entrying', true);
-      Session.set('selectedRoom', this._id);
+      Session.setPersistent('selectedRoom', this._id);
     },
 
     /**
@@ -127,7 +127,9 @@ if (Meteor.isClient) {
 
   Template.room.helpers({
     room: function () {
-      return Session.get('selectedRoom');
+      var roomid = Session.get('selectedRoom');
+      var room = db.rooms.findOne({_id: roomid});
+      return (room) ? room.name: '';
     },
     creating: function () {
       return Session.get('creating-manifest');
