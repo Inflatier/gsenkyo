@@ -39,14 +39,12 @@
     <form>
       <label>ゲーム名</label>
       <input class="name" type="text" />
-      <label>参加人数</label>
-      <div class="number">
-        <input class="number" type="number" min="2" max="114514" />
-        <p class="number">人</p>
-      </div>
       <label>パスワード</label>
       <input class="password" type="password" />
-      <input type="submit" value="作成" />
+      <div class="buttons">
+        <input type="submit" value="作成" />
+        <input type="button" class="cancel" value="キャンセル" />
+      </div>
     </form>
   </div>
 </template>
@@ -91,6 +89,9 @@
   </div>
   <div class="create-manifest {{creating}}">
     <h1>マニフェスト作成</h1>
+    <p>候補者名: {{player.name}}</p>
+    <p>マニフェスト名</p><input type="text" >
     <textarea></textarea>
+    <button></button>
   </div>
 </template>

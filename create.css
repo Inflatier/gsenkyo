@@ -19,7 +19,6 @@ div.create h1 {
 
 div.create label,
 div.create input.name,
-div.create div.number,
 div.create input.password{
   display: block;
   width: 92%;
@@ -39,17 +38,27 @@ div.create input {
   margin-bottom: 20px;
 }
 
-div.create input.number,
-div.create p.number {
-  display: inline;
+div.create .buttons {
+  display: table;
+  width: 92%;
+  margin: 0 auto;
+}
+
+div.create .buttons input {
+  display: table-cell;
+  padding: 4px 24px;
+  margin: 20px auto 0;
 }
 
 div.create input[type=submit] {
-  display: block;
-  width: 72%;
   border: 1px solid hsl(210, 100%, 50%);
   background-color: hsl(210, 100%, 50%);
   color: white;
-  padding: 4px 24px;
-  margin: 20px auto 0;
+  margin-right: 10px;
+}
+
+div.create input.cancel {
+  border: 1px solid hsl(0, 0%, 71%);
+  background-color: hsl(0, 0%, 71%);
+  color: white;
 }
