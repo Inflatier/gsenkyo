@@ -131,7 +131,7 @@ if (Meteor.isClient) {
     creating: function () {
       return Session.get('creating-manifest');
     }
-  }):
+  });
 
 }
 
