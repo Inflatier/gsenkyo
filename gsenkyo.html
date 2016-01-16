@@ -79,10 +79,11 @@
 
 <template name="room">
   <div class="room">
-    <h1>ROOM</h1>
+    <h1>{{room}}</h1>
     <div class="manifest-buttons">
       <button class="create">マニフェストを作る</button>
       <button class="view">マニフェストを見る</button>
+      <button onclick="Session.setPersistent('logged-in', false)">部屋を出る</button>
     </div>
   </div>
   <div class="create-manifest {{creating}}">

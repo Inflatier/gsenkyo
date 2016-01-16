@@ -46,6 +46,11 @@ if (Meteor.isClient) {
     }
   });
 
+  Template.title.helpers({
+    logs: function () {
+      return db.logs.find({});
+    }
+  });
 
   Template.title.events({
     'click button.join': function () {
@@ -55,13 +60,6 @@ if (Meteor.isClient) {
       Session.set('creating-room', true);
     }
   });
-
-  Template.logs.helpers({
-    logs: function () {
-      return db.logs.find({});
-    }
-  });
-
 
   Template.createRoom.events({
     'submit form': function (e, template) {
@@ -128,6 +126,9 @@ if (Meteor.isClient) {
   });
 
   Template.room.helpers({
+    room: function () {
+      return Session.get('selectedRoom');
+    },
     creating: function () {
       return Session.get('creating-manifest');
     }
