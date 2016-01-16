@@ -77,7 +77,7 @@ if (Meteor.isClient) {
       e.preventDefault();
       var name = template.find('input.name').value;
       var password = template.find('input.password').value;
-      db.rooms.insert({name: name, password: password});
+      db.rooms.insert({name: name, password: password,players:[]});
       Session.set('creating-room', false);
     }
   });
