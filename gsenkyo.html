@@ -26,15 +26,11 @@
   </div>
   <div class="logs">
     <ul>
-      {{> logs}}
+      {{#each logs}}
+        <li>{{name}}</li>
+      {{/each}}
     </ul>
   </div>
-</template>
-
-<template name="logs">
-  {{#each logs}}
-    <li>{{name}}</li>
-  {{/each}}
 </template>
 
 <template name="createRoom">
