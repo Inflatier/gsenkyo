@@ -12,6 +12,9 @@
     {{#if selectingRoom}}
       {{> selectRoom}}
     {{/if}}
+    {{#if loggedIn}}
+      {{> room}}
+    {{/if}}
   </div>
 </body>
 
@@ -75,5 +78,11 @@
         <input type="button" class="cancel" value="キャンセル" />
       </div>
     </form>
+  </div>
+</template>
+
+<template name="room">
+  <div class="room">
+    <h1>ROOM</h1>
   </div>
 </template>
