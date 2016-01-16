@@ -132,7 +132,13 @@ if (Meteor.isClient) {
       return (room) ? room.name: '';
     },
     creating: function () {
-      return Session.get('creating-manifest');
+      return (Session.get('creating-manifest')) ? 'creating' : '';
+    }
+  });
+
+  Template.room.events({
+    'click button.create': function () {
+      Session.set('creating-manifest', true);
     }
   });
 
