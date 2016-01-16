@@ -80,10 +80,10 @@
 <template name="room">
   <div class="room">
     <h1>{{room}}</h1>
+    <a href="javascript:Session.setPersistent('logged-in', false)">部屋を出る</a>
     <div class="manifest-buttons">
       <button class="create">自分のマニフェストを作る</button>
       <button class="view">みんなのマニフェストを見る</button>
-      <button onclick="Session.setPersistent('logged-in', false)">部屋を出る</button>
     </div>
   </div>
   <div class="create-manifest {{creating}}">
