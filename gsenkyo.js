@@ -4,12 +4,14 @@ db.rooms = new Mongo.Collection('rooms');
 
 
 if (Meteor.isClient) {
+  // グローバル変数のようなもの
   Session.setDefault('creating-room', false);
   Session.setDefault('selecting-room', false);
   Session.setDefault('entrying', false);
   Session.setDefault('selectedRoom', null);
   Session.setDefault('password', null);
   Session.setDefault('logged-in', false);
+  Session.setDefault('creating-manifest', false);
 
   // データベースにアクセスできるようにする
   Meteor.subscribe('rooms');
@@ -124,6 +126,12 @@ if (Meteor.isClient) {
       return (room) ? room.name : '';
     }
   });
+
+  Template.room.helpers({
+    creating: function () {
+      return Session.get('creating-manifest');
+    }
+  }):
 
 }
 
