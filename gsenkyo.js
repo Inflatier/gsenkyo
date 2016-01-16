@@ -2,21 +2,33 @@ var db = {};
 db.logs = new Mongo.Collection('logs');
 db.rooms = new Mongo.Collection('rooms');
 
-function Player(i) {
-	this.name=i;
-	this.mani_name='';
-	this.context='';
-	this.data = '';
-	this.chart = {
-		topic1:{name:'',num:null},
-		topic2:{name:'',num:null},
-		topic3:{name:'',num:null},
-	}
+function Player(name, id) {
+  this.id = id;
+  this.name = name;
+  this.manifestTitle = '';
+  this.manifest = '';
+  this.data = '';
+  this.chart = {
+    topic1: {name: '', num: null},
+    topic2: {name: '', num: null},
+    topic3: {name: '', num: null},
+  };
 };
+
+function getRoomNameById(roomId) {
+  var room = db.rooms.findOne({_id: roomId});
+  return (room) ? room.name : '';
+}
+
+function getPlayerById(userId) {
+
+}
 
 if (Meteor.isClient) {
   // グローバル変数のようなもの
+  Session.setDefault('user-id', null);
   Session.setDefault('creating-room', false);
+  Session.setDefault('is-room-manager', false);
   Session.setDefault('selecting-room', false);
   Session.setDefault('entrying', false);
   Session.setDefault('selectedRoom', null);
@@ -46,6 +58,9 @@ if (Meteor.isClient) {
   */
 
   Template.body.helpers({
+    isRoomManager: function () {
+      return Session.get('is-room-manager');
+    },
     creatingRoom: function () {
       return Session.get('creating-room');
     },
@@ -72,13 +87,26 @@ if (Meteor.isClient) {
     }
   });
 
+  Template.manager.helpers({
+    room: function () {
+      return getRoomNameById(Session.get('selectedRoom'));
+    }
+  });
+
   Template.createRoom.events({
     'submit form': function (e, template) {
       e.preventDefault();
       var name = template.find('input.name').value;
       var password = template.find('input.password').value;
-      db.rooms.insert({name: name, password: password,players:[]});
+
+      db.rooms.insert({
+        name: name,
+        password: password,
+        players: []
+      });
+
       Session.set('creating-room', false);
+      Session.setPersistent('is-room-manager', true);
     },
     'click .cancel': function (e, template) {
       Session.set('creating-room', false);
@@ -107,12 +135,13 @@ if (Meteor.isClient) {
       var password = template.find('input.password').value;
 
       // Meteor.methodsで定義したメソッドloginを呼び出し
-      Meteor.call('login', roomId, name, password, function (err) {
+      Meteor.call('login', roomId, name, password, function (err, userId) {
         if (err) {
           // ログインできなかった
           console.error(err);
         } else {
           // ログインできた
+          Session.setPersistent('user-id', userId);
           Session.setPersistent('logged-in', true);
           Session.setPersistent('password', password);
           Session.set('selecting-room', false);
@@ -133,24 +162,26 @@ if (Meteor.isClient) {
       return (Session.get('entrying')) ? 'entrying' : '';
     },
     room: function () {
-      var roomId = Session.get('selectedRoom');
-      var room = db.rooms.findOne({_id: roomId});
-      return (room) ? room.name : '';
+      return getRoomNameById(Session.get('selectedRoom'));
     }
   });
 
   Template.room.helpers({
     room: function () {
-      var roomid = Session.get('selectedRoom');
-      var room = db.rooms.findOne({_id: roomid});
-      return (room) ? room.name: '';
+      return getRoomNameById(Session.get('selectedRoom'));
     },
     creating: function () {
       return (Session.get('creating-manifest')) ? 'creating' : '';
+    },
+    player: function () {
+
     }
   });
 
   Template.room.events({
+    'click .exit': function () {
+      Session.setPersistent('logged-in', false);
+    },
     'click button.create': function () {
       Session.set('creating-manifest', true);
     }
@@ -159,7 +190,6 @@ if (Meteor.isClient) {
 }
 
 if (Meteor.isServer) {
-
   // サーバー起動時に挿入されるサンプルデータ
   Meteor.startup(function () {
     db.logs.update({}, {name: 'ここにログが入る予定'}, {upsert: true});
@@ -176,6 +206,7 @@ if (Meteor.isServer) {
     insert: function (userId, doc) {
       if (!doc.name) return false;
       if (!doc.password) return false;
+      if (!doc.players) return false;
       return true;
     }
   });
@@ -195,17 +226,21 @@ if (Meteor.isServer) {
         throw new Meteor.Error('Input name');
       }
 
+      // パスワードが一致したら
       if (room.password === password) {
-		var player = new Player(name);
-		db.rooms.update({_id: roomId}, {
-			$push: { 'players': player }
-		}, function (err, doc) {
-			console.log(err, doc);
-		});
+        // ユーザーオブジェクトを作成
+        var id = (new Date().getTime()).toString() + (Math.floor(Math.random() * 1000)).toString();
+        var player = new Player(name, id);
+
+        db.rooms.update(
+          {_id: roomId},
+          { $push: {'players': player} });
+
+        return id;
       } else {
         throw new Meteor.Error('Wrong password')
       }
-    }
+    },
   });
 
   // クライアントにデータベースを公開する

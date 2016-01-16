@@ -31,6 +31,10 @@ div.room h1 {
   /*box-shadow: 0 10px 6px -7px rgba(0,0,0,.3);*/
 }
 
+/**
+*
+*/
+
 div.create-manifest {
   position: absolute;
   width: 100%; height: 100%;
@@ -55,10 +59,58 @@ div.create-manifest h1 {
   text-align: center;
 }
 
+div.create-manifest .name {
+  width: 92%;
+  margin: 0 auto 2px;
+  font-size: 20px;
+}
+
+div.create-manifest label {
+  display: block;
+  width: 92%;
+  margin: 0 auto 2px;
+  font-size: 20px;
+}
+
+div.create-manifest .manifest-name {
+  display: block;
+  width: 92%;
+  margin: 0 auto 15px;
+  border: 1px solid gray;
+  font-size: 20px;
+}
+
 div.create-manifest textarea {
   display: block;
   width: 90%;
   height: 40%;
   margin: 0 auto 20px;
   resize: none;
+}
+
+div.create-manifest .buttons {
+  display: table;
+  width: 92%;
+  margin: 0 auto;
+}
+
+div.create-manifest .buttons input {
+  display: table-cell;
+  padding: 4px 24px;
+  margin: 0 auto 0;
+  font-size: 22px;
+  border-radius: 6px;
+}
+
+div.create-manifest input[type=submit] {
+  border: 1px solid hsl(210, 100%, 50%);
+  background-color: hsl(210, 100%, 50%);
+  color: white;
+  margin-right: 10px;
+}
+
+div.create-manifest input.cancel {
+  border: 1px solid hsl(0, 0%, 71%);
+  background-color: hsl(0, 0%, 71%);
+  color: white;
 }

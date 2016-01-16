@@ -6,6 +6,9 @@
 <body>
   <div id="app-body">
     {{> title}}
+    {{#if isRoomManager}}
+      {{> manager}}
+    {{/if}}
     {{#if creatingRoom}}
       {{> createRoom}}
     {{/if}}
@@ -35,17 +38,25 @@
 
 <template name="createRoom">
   <div class="create">
-    <h1>ゲームを作る</h1>
+    <h1>部屋を作る</h1>
     <form>
-      <label>ゲーム名</label>
+      <label>部屋の名前</label>
       <input class="name" type="text" />
-      <label>パスワード</label>
+      <label>部屋のパスワード</label>
       <input class="password" type="password" />
       <div class="buttons">
         <input type="submit" value="作成" />
         <input type="button" class="cancel" value="キャンセル" />
       </div>
     </form>
+  </div>
+</template>
+
+<template name="manager">
+  <div class="manager">
+    <h1>{{room}}</h1>
+    <p>部屋「{{room}}」に対して操作ができます</p>
+    <button onclick="Session.setPersistent('is-room-manager', false)">おわり</button>
   </div>
 </template>
 
@@ -78,7 +89,7 @@
 <template name="room">
   <div class="room">
     <h1>{{room}}</h1>
-    <a href="javascript:Session.setPersistent('logged-in', false)">部屋を出る</a>
+    <button class="exit">部屋を出る</button>
     <div class="manifest-buttons">
       <button class="create">自分のマニフェストを作る</button>
       <button class="view">みんなのマニフェストを見る</button>
@@ -86,9 +97,14 @@
   </div>
   <div class="create-manifest {{creating}}">
     <h1>マニフェスト作成</h1>
-    <p>候補者名: {{player.name}}</p>
-    <p>マニフェスト名</p><input type="text" >
+    <p class="name">候補者名: {{player.name}}</p>
+    <label>マニフェスト名:</label>
+    <input class="manifest-name" type="text" >
+    <label>マニフェスト本文:</label>
     <textarea></textarea>
-    <button></button>
+    <div class="buttons">
+      <input type="submit" value="完了" />
+      <input type="button" class="cancel" value="キャンセル" />
+    </div>
   </div>
 </template>
