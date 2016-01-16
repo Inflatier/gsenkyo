@@ -24,8 +24,8 @@
 <template name="title">
   <h1 class="title">G-Senkyo</h1>
   <div class="menu-buttons">
-    <button class="create">部屋を作る</button>
-    <button class="join">ゲームに参加</button>
+    <button class="create">選挙開催</button>
+    <button class="join">選挙に参加</button>
   </div>
   <div class="logs">
     <ul>
@@ -38,9 +38,9 @@
 
 <template name="createRoom">
   <div class="create">
-    <h1>部屋を作る</h1>
+    <h1>選挙を作る</h1>
     <form>
-      <label>部屋の名前</label>
+      <label>選挙名</label>
       <input class="name" type="text" />
       <label>部屋のパスワード</label>
       <input class="password" type="password" />
@@ -62,8 +62,8 @@
 
 <template name="selectRoom">
   <div class="select {{entrying}}">
-    <h1>部屋一覧</h1>
-    <p class="description">参加する部屋を選んでください</p>
+    <h1>開催中の選挙一覧</h1>
+    <p class="description">参加する選挙を選んでください</p>
     <ul>
       {{#each rooms}}
         <li>{{name}}</li>
@@ -72,7 +72,7 @@
   </div>
   <div class="entry {{entrying}}">
     <h1>{{room}}</h1>
-    <p class="description">使用する名前と、この部屋のパスワードを入力してください。</p>
+    <p class="description">使用する名前と、この選挙のパスワードを入力してください。</p>
     <form>
       <label>名前</label>
       <input class="name" type="text" />
@@ -91,8 +91,14 @@
     <h1>{{room}}</h1>
     <button class="exit">部屋を出る</button>
     <div class="manifest-buttons">
+      <p>マニフェスト提案</p>
       <button class="create">自分のマニフェストを作る</button>
       <button class="view">みんなのマニフェストを見る</button>
+      <p>街のオープンデータを見る</p>
+      <button class="opendatas">よこはまオープンデータカタログ</button>
+      <button class="linkdata">LinkData(横浜市)</button>
+      <p>投票</p>
+      <button class="voting"><s>投票する</s></button>
     </div>
   </div>
   <div class="create-manifest {{creating}}">
