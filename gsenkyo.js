@@ -2,6 +2,17 @@ var db = {};
 db.logs = new Mongo.Collection('logs');
 db.rooms = new Mongo.Collection('rooms');
 
+function Player(i) {
+	this.name=i;
+	this.mani_name='';
+	this.context='';
+	this.data = '';
+	this.chart = {
+		topic1:{name:'',num:null},
+		topic2:{name:'',num:null},
+		topic3:{name:'',num:null},
+	}
+};
 
 if (Meteor.isClient) {
   // グローバル変数のようなもの
@@ -143,7 +154,12 @@ if (Meteor.isServer) {
   // サーバー起動時に挿入されるサンプルデータ
   Meteor.startup(function () {
     db.logs.update({}, {name: 'ここにログが入る予定'}, {upsert: true});
-    db.rooms.update({}, {name: '部屋の名前', password: 'pass'}, {upsert: true});
+    db.rooms.update({}, {
+		name: '部屋の名前',
+		password: 'pass',
+		players:[],
+	}, {upsert: true});
+	
   });
 
   // name, passwordがあるデータだけが保存できるようにする
@@ -171,7 +187,12 @@ if (Meteor.isServer) {
       }
 
       if (room.password === password) {
-        return 'Login successful';
+		var player = new Player(name);
+		db.rooms.update({_id: roomId}, {
+			$push: { 'players': player }
+		}, function (err, doc) {
+			console.log(err, doc);
+		});
       } else {
         throw new Meteor.Error('Wrong password')
       }
