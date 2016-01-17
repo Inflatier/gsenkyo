@@ -27,6 +27,10 @@ if (Meteor.isClient) {
   Session.setDefault('password', null);
   Session.setDefault('logged-in', false);
   Session.setDefault('creating-manifest', false);
+  
+//  Session.setPersistent('user-id', null);
+//  Session.setPersistent('logged-in', null);
+//  Session.setPersistent('password', null);
 
   // データベースにアクセスできるようにする
   Meteor.subscribe('rooms');
