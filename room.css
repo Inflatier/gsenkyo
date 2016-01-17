@@ -37,7 +37,7 @@ div.room .exit {
   margin-left: 4%;
 }
 
-.manifest-buttons button {
+div.room .manifest-buttons button {
   display: block;
   width: 94%;
   font-size: 19px;
@@ -51,14 +51,14 @@ div.room .exit {
   /*box-shadow: 0 10px 6px -7px rgba(0,0,0,.3);*/
 }
 
+div.room .manifest-buttons .voting {
+  color: hsl(0, 0%, 85%);
+  border: 1px solid hsl(210, 0%, 85%);
+}
+
 /**
 *
 */
-
-.manifest-buttons .voting {
-  color: hsl(210, 24%, 60%);
-  border: 1px solid hsl(210, 24%, 60%);
-}
 
 div.create-manifest {
   position: absolute;
@@ -67,7 +67,7 @@ div.create-manifest {
   top: 0;
   left: 100%;
   background-color: hsl(0, 0%, 100%);
-  transition: left 0.6s;
+  transition: left 0.4s;
 }
 
 div.create-manifest.creating {
@@ -152,7 +152,7 @@ div.view-manifests {
   top: 0;
   left: 100%;
   background-color: hsl(0, 0%, 100%);
-  transition: left 0.6s;
+  transition: left 0.4s;
 }
 
 div.view-manifests.viewing {
@@ -163,14 +163,14 @@ div.view-manifests button.back {
   border-radius: 6px;
   background-color: hsl(0, 0%, 100%);
   border: 1px solid hsl(210, 100%, 50%);
-  font-size: 24px;
+  font-size: 20px;
   margin: 10px 4%;
-  padding: 4px;
+  padding: 1px 4px;
   color: hsl(210, 100%, 50%);
 }
 
 div.view-manifests button.back::before {
-  content: '< ';
+  content: '＜';
 }
 
 div.view-manifests h1 {
@@ -216,7 +216,7 @@ div.manifest {
   top: 0;
   left: 100%;
   background-color: hsl(0, 0%, 100%);
-  transition: left 0.6s;
+  transition: left 0.4s;
 }
 
 div.manifest.selected {
@@ -238,14 +238,14 @@ div.manifest button.back {
   border-radius: 6px;
   background-color: hsl(0, 0%, 100%);
   border: 1px solid hsl(210, 100%, 50%);
-  font-size: 24px;
+  font-size: 20px;
   margin: 10px 4%;
-  padding: 4px;
+  padding: 1px 4px;
   color: hsl(210, 100%, 50%);
 }
 
 div.manifest button.back::before {
-  content: '< ';
+  content: '＜';
 }
 
 div.manifest .manifest-title {

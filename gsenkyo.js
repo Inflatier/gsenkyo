@@ -93,20 +93,20 @@ if (Meteor.isClient) {
         alert('同じ名前の選挙が存在します。別の名前を使ってください。');
         return;
       }
-      db.rooms.insert({
-        name: name,
-        password: password,
-        players: []
-      }, function (err) {
+
+      Meteor.call('createRoom', name, password, function (err, manageId) {
         if (err) {
+          alert(err.error);
           Session.setPersistent('selectedRoom', null);
           Session.setPersistent('is-room-manager', false);
+        } else {
+          Session.setPersistent('selectedRoom', name);
+          Session.set('creating-room', false);
+          Session.setPersistent('manager-id', manageId);
+          Session.setPersistent('is-room-manager', true);
         }
       });
 
-      Session.setPersistent('selectedRoom', name);
-      Session.set('creating-room', false);
-      Session.setPersistent('is-room-manager', true);
     },
     'click .cancel': function (e, template) {
       Session.set('creating-room', false);
@@ -116,6 +116,23 @@ if (Meteor.isClient) {
   Template.manager.helpers({
     room: function () {
       return Session.get('selectedRoom');
+    }
+  });
+
+  Template.manager.events({
+    'click button.destroy-room': function () {
+      var managerId = Session.get('manager-id');
+      var roomName = Session.get('selectedRoom');
+      Meteor.call('destroyRoom', roomName, managerId, function (err, result) {
+        if (err) {
+          console.error(err);
+        } else {
+          alert(result);
+          Session.setPersistent('is-room-manager', false);
+          Session.setPersistent('selectedRoom', null);
+          Session.setPersistent('manager-id', null);
+        }
+      });
     }
   });
 
@@ -145,6 +162,7 @@ if (Meteor.isClient) {
         if (err) {
           // ログインできなかった
           console.error(err);
+          alert(err.error);
         } else {
           // ログインできた
           Session.setPersistent('user-id', userId);
@@ -274,14 +292,6 @@ if (Meteor.isServer) {
 
   // name, passwordがあるデータだけが保存できるようにする
   db.rooms.allow({
-    insert: function (userId, doc) {
-      if (!doc.name) return false;
-      if (!doc.password) return false;
-      if (!doc.players) return false;
-      var nameOverwrap = db.rooms.findOne({name: doc.name});
-      if (nameOverwrap != null) return false;
-      return true;
-    },
     update: function (userId, doc, fieldName, modifier) {
       return true;
     }
@@ -314,7 +324,7 @@ if (Meteor.isServer) {
 
         return id;
       } else {
-        throw new Meteor.Error('Wrong password')
+        throw new Meteor.Error('パスワードが間違っています')
       }
     },
     logout: function (roomName, id) {
@@ -334,6 +344,35 @@ if (Meteor.isServer) {
             'players.$.manifestTitle': manifestTitle
           }
         });
+    },
+    'createRoom': function (name, password) {
+      check(name, String);
+      check(password, String);
+      if (!name) throw new Meteor.Error('名前がないやん');
+      if (!password) throw new Meteor.Error('パスワードないやん');
+
+      var nameOverwrap = db.rooms.findOne({name: name});
+      if (nameOverwrap) throw new Meteor.Error('同じ名前の部屋が既に存在します。')
+
+      var id = (new Date().getTime()).toString() + (Math.floor(Math.random() * 1000)).toString();
+
+      db.rooms.insert({
+        name: name,
+        password: password,
+        managerId: id,
+        players: []
+      });
+
+      return id;
+    },
+    'destroyRoom': function (name, managerId) {
+      var room = db.findOne({name: name});
+      if (room.managerId == managerId) {
+        db.rooms.remove({name: name});
+        return name + 'を削除しました。'
+      } else {
+        throw new Meteor.Error('不正なアクセスだゾ');
+      }
     }
   });
 

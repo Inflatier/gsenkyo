@@ -58,8 +58,29 @@
 <template name="manager">
   <div class="manager">
     <h1>{{room}}</h1>
-    <p>部屋「{{room}}」に対して操作ができます</p>
-    <button onclick="Session.setPersistent('is-room-manager', false)">おわり</button>
+    <p class="description">「{{room}}」に対して操作ができます</p>
+    <button class="view-manifests">マニフェストを見る</button>
+    <button class="destroy-room">選挙終了</button>
+  </div>
+  <div class="view-manifests {{viewing}}">
+    <button class="back">戻る</button>
+    <h1>マニフェスト一覧</h1>
+    <ul class="manifests">
+      {{#each candidates}}
+        <li>
+          <p>候補者名: {{name}}</p>
+          <p>タイトル: {{manifestTitle}}</p>
+        </li>
+      {{/each}}
+    </ul>
+  </div>
+  <div class="manifest {{selected}}">
+    <button class="back">マニフェスト一覧</button>
+    {{#with candidate}}
+      <h1 class="name">{{name}}</h1>
+      <h2 class="manifest-title">{{manifestTitle}}</h2>
+      <p class="manifest-body">{{manifest}}</p>
+    {{/with}}
   </div>
 </template>
 
@@ -75,9 +96,9 @@
   </div>
   <div class="entry {{entrying}}">
     <h1>{{room}}</h1>
-    <p class="description">使用する名前と、この選挙のパスワードを入力してください。</p>
+    <p class="description">あなたの名前と、この選挙に設定されたパスワードを入力してください。</p>
     <form>
-      <label>名前</label>
+      <label>立候補者名</label>
       <input class="name" type="text" required>
       <label>パスワード</label>
       <input class="password" type="password" required>
@@ -101,7 +122,7 @@
       <button class="opendatas">よこはまオープンデータカタログ</button>
       <button class="linkdata">LinkData(横浜市)</button>
       <h2>投票</h2>
-      <button class="voting"><s>投票する</s></button>
+      <button class="voting">投票する</button>
     </div>
   </div>
   <div class="create-manifest {{creating}}">
