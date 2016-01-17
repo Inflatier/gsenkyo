@@ -30,6 +30,7 @@ if (Meteor.isClient) {
   Session.setDefault('viewing-manifests', false);
   Session.setDefault('selectedCandidate', null);
   Session.setDefault('viewing-manifest', false);
+  Session.setDefault('voting', false);
 
   // データベースにアクセスできるようにする
   Meteor.subscribe('rooms');
@@ -116,22 +117,54 @@ if (Meteor.isClient) {
   Template.manager.helpers({
     room: function () {
       return Session.get('selectedRoom');
+    },
+    viewing: function () {
+      return (Session.get('viewing-manifests')) ? 'viewing' : '';
+    },
+    selected: function () {
+      return (Session.get('viewing-manifest')) ? 'selected' : '';
+    },
+    candidates: function () {
+      var room = db.rooms.findOne({name: Session.get('selectedRoom')});
+      if (room) return room.players;
+    },
+    candidate: function () {
+      return Session.get('selectedCandidate');
     }
   });
 
   Template.manager.events({
+    'click button.view-manifests': function () {
+      Session.set('viewing-manifests', true);
+    },
+    'click .view-manifests button.back': function () {
+      Session.set('viewing-manifests', false);
+    },
+    'click .manifests li': function (e, template) {
+      Session.set('selectedCandidate', this);
+      Session.set('viewing-manifest', true);
+    },
+    'click .manifest button.back': function () {
+      Session.set('viewing-manifest', false);
+      Session.set('selectedCandidate', null);
+    },
+    'click button.start-voting': function () {
+      var roomName = Session.get('selectedRoom');
+      Meteor.call('setVotingState', roomName, true);
+    },
     'click button.destroy-room': function () {
       var managerId = Session.get('manager-id');
       var roomName = Session.get('selectedRoom');
+      Meteor.call('setVotingState', roomName, false);
       Meteor.call('destroyRoom', roomName, managerId, function (err, result) {
         if (err) {
           console.error(err);
         } else {
           alert(result);
-          Session.setPersistent('is-room-manager', false);
-          Session.setPersistent('selectedRoom', null);
-          Session.setPersistent('manager-id', null);
         }
+        Session.setPersistent('is-room-manager', false);
+        Session.setPersistent('selectedRoom', null);
+        Session.setPersistent('manager-id', null);
       });
     }
   });
@@ -219,6 +252,23 @@ if (Meteor.isClient) {
     },
     candidate: function () {
       return Session.get('selectedCandidate');
+    },
+    votable: function () {
+      var room = db.rooms.findOne({name: Session.get('selectedRoom')});
+      if (room) return (room.voting) ? 'votable' : '';
+    },
+    voting: function () {
+      return (Session.get('voting')) ? 'voting' : '';
+    },
+    candidates_vote: function () {
+      var room = db.rooms.findOne({name: Session.get('selectedRoom')});
+      if (room)
+        return room.players.filter(function (player) {
+          return (player.id != Session.get('user-id'));
+        });
+    },
+    candidate_vote: function () {
+      return Session.get('selectedCandidate');
     }
   });
 
@@ -273,6 +323,12 @@ if (Meteor.isClient) {
       var manifestBody = template.find('.manifest-body').value;
       Meteor.call('post', roomName, id, manifestTitle, manifestBody);
       Session.set('creating-manifest', false);
+    },
+    'click button.vote.votable': function () {
+      Session.set('voting', true);
+    },
+    'click .polling button.back': function () {
+      Session.set('voting', false);
     }
   });
 
@@ -281,13 +337,13 @@ if (Meteor.isClient) {
 if (Meteor.isServer) {
   // サーバー起動時に挿入されるサンプルデータ
   Meteor.startup(function () {
+    /*
     db.logs.update({}, {name: 'ここにログが入る予定'}, {upsert: true});
     db.rooms.update({}, {
 		name: '部屋の名前',
 		password: 'pass',
 		players: [],
-	}, {upsert: true});
-
+	}, {upsert: true});*/
   });
 
   // name, passwordがあるデータだけが保存できるようにする
@@ -360,6 +416,7 @@ if (Meteor.isServer) {
         name: name,
         password: password,
         managerId: id,
+        voting: false,
         players: []
       });
 
@@ -373,6 +430,10 @@ if (Meteor.isServer) {
       } else {
         throw new Meteor.Error('不正なアクセスだゾ');
       }
+    },
+    'setVotingState': function (roomName, value) {
+      check(value, Boolean);
+      db.rooms.update({name: roomName}, { $set: {voting: value} });
     }
   });
 

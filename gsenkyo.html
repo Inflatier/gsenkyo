@@ -60,7 +60,8 @@
     <h1>{{room}}</h1>
     <p class="description">「{{room}}」に対して操作ができます</p>
     <button class="view-manifests">マニフェストを見る</button>
-    <button class="destroy-room">選挙終了</button>
+    <button class="start-voting">投票を開始する</button>
+    <button class="destroy-room">選挙を消去する</button>
   </div>
   <div class="view-manifests {{viewing}}">
     <button class="back">戻る</button>
@@ -122,7 +123,7 @@
       <button class="opendatas">よこはまオープンデータカタログ</button>
       <button class="linkdata">LinkData(横浜市)</button>
       <h2>投票</h2>
-      <button class="voting">投票する</button>
+      <button class="vote {{votable}}">投票する</button>
     </div>
   </div>
   <div class="create-manifest {{creating}}">
@@ -158,5 +159,14 @@
       <h2 class="manifest-title">{{manifestTitle}}</h2>
       <p class="manifest-body">{{manifest}}</p>
     {{/with}}
+  </div>
+  <div class="polling {{voting}}">
+    <button class="back">戻る</button>
+    <h1>投票</h1>
+    <ul class="candidates">
+      {{#each candidates_vote}}
+        <li>{{name}}</li>
+      {{/each}}
+    </ul>
   </div>
 </template>

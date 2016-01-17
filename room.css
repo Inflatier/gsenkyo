@@ -51,9 +51,14 @@ div.room .manifest-buttons button {
   /*box-shadow: 0 10px 6px -7px rgba(0,0,0,.3);*/
 }
 
-div.room .manifest-buttons .voting {
+div.room .manifest-buttons .vote {
   color: hsl(0, 0%, 85%);
   border: 1px solid hsl(210, 0%, 85%);
+}
+
+div.room .manifest-buttons .vote.votable {
+  color: hsl(210, 100%, 50%);
+  border: 1px solid hsl(210, 100%, 50%);
 }
 
 /**
@@ -265,4 +270,64 @@ div.manifest .manifest-body {
   width: 92%;
   margin: 0 auto;
   padding: 6px;
+}
+
+/**
+*
+*/
+
+div.polling {
+  position: absolute;
+  overflow-y: auto;
+  width: 100%; height: 100%;
+  top: 0;
+  left: 100%;
+  background-color: hsl(0, 0%, 100%);
+  transition: left 0.4s;
+}
+
+div.polling.voting {
+  left: 0%;
+}
+
+div.polling button.back {
+  border-radius: 6px;
+  background-color: hsl(0, 0%, 100%);
+  border: 1px solid hsl(210, 100%, 50%);
+  font-size: 20px;
+  margin: 10px 4%;
+  padding: 1px 4px;
+  color: hsl(210, 100%, 50%);
+}
+
+div.polling button.back::before {
+  content: '＜';
+}
+
+div.polling h1 {
+  display: block;
+  width: 92%;
+  font-weight: normal;
+  color: hsl(210, 100%, 50%);
+  border-bottom: 1px solid hsl(210, 100%, 50%);
+  padding-bottom: 10px;
+  margin: 10px auto 20px;
+  text-align: center;
+}
+
+div.polling ul {
+  width: 92%;
+  padding: 0;
+  margin: 0 auto;
+  list-style: none;
+}
+
+div.polling ul li {
+  padding: 4px;
+  font-size: 20px;
+  border-bottom: 1px dotted gray;
+}
+
+div.polling ul li:hover {
+  background-color: hsl(210, 100%, 72%);
 }

@@ -36,3 +36,8 @@ div.manager button {
   padding: 4px;
   /*box-shadow: 0 10px 6px -7px rgba(0,0,0,.3);*/
 }
+
+div.manager button.destroy-room {
+  color: hsl(0, 100%, 63%);
+  border-color: hsl(0, 100%, 63%);
+}
