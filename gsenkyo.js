@@ -184,14 +184,14 @@ if (Meteor.isClient) {
       var room = db.rooms.findOne(
         {name: Session.get('selectedRoom')},
         {players: 1});
+      if (!room) return;
+      if (!room.players) return;
       for (var i = 0; i < room.players.length; i++) {
         if (room.players[i].id == Session.get('user-id'))
           return room.players[i];
       }
     }
   });
-
-  Template.room.preserve(['input', 'textarea']);
 
   Template.room.events({
     'click .exit': function () {
@@ -200,8 +200,23 @@ if (Meteor.isClient) {
       Meteor.call('logout', roomname, id);
       Session.setPersistent('logged-in', false);
     },
-    'click button.create': function () {
+    'click button.create': function (e, template) {
       Session.set('creating-manifest', true);
+      var title = template.find('.manifest-title');
+      var body = template.find('.manifest-body');
+      var room = db.rooms.findOne(
+      {name: Session.get('selectedRoom')},
+      {players: 1});
+      var player = (function () {
+        for (var i = 0; i < room.players.length; i++)
+          if (room.players[i].id == Session.get('user-id'))
+            return room.players[i];
+      })();
+      title.value = player.manifestTitle;
+      body.value = player.manifest;
+    },
+    'click button.view': function () {
+      Session.set('viewing', true);
     },
     'click button.opendatas': function () {
       window.open("http://www.city.yokohama.lg.jp/seisaku/seisaku/opendata/catalog.html");
@@ -210,6 +225,15 @@ if (Meteor.isClient) {
       window.open("http://linkdata.org/work?sort=date&tag=CITY_140001#workList");
     },
     'click .create-manifest .cancel': function () {
+      Session.set('creating-manifest', false);
+    },
+    'submit form': function (e, template) {
+      e.preventDefault();
+      var roomName = Session.get('selectedRoom');
+      var id = Session.get('user-id');
+      var manifestTitle = template.find('.manifest-title').value;
+      var manifestBody = template.find('.manifest-body').value;
+      Meteor.call('post', roomName, id, manifestTitle, manifestBody);
       Session.set('creating-manifest', false);
     }
   });
@@ -236,6 +260,9 @@ if (Meteor.isServer) {
       if (!doc.players) return false;
       var nameOverwrap = db.rooms.findOne({name: doc.name});
       if (nameOverwrap != null) return false;
+      return true;
+    },
+    update: function (userId, doc, fieldName, modifier) {
       return true;
     }
   });
@@ -274,6 +301,19 @@ if (Meteor.isServer) {
       db.rooms.update({name: roomName}, {
         $pull: {players: {'id': id} }
       });
+    },
+    'post': function (roomName, id, manifestTitle, manifestBody) {
+      db.rooms.update(
+        {
+          name: roomName,
+          'players.id': id
+        },
+        {$set:
+          {
+            'players.$.manifest': manifestBody,
+            'players.$.manifestTitle': manifestTitle
+          }
+        });
     }
   });
 
