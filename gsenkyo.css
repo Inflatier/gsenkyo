@@ -9,6 +9,7 @@ body {
 
 body, section, h1, h2, h3, p, div, ul, li {
   padding: 0; margin: 0;
+  word-break: break-word;
 }
 
 #app-body {
