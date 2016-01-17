@@ -37,6 +37,12 @@ div.manager button {
   /*box-shadow: 0 10px 6px -7px rgba(0,0,0,.3);*/
 }
 
+div.manager button.start-voting.started,
+div.manager button.stop-voting.stopped {
+  color: hsl(0, 0%, 85%);
+  border-color: hsl(0, 0%, 85%);
+}
+
 div.manager button.destroy-room {
   color: hsl(0, 100%, 63%);
   border-color: hsl(0, 100%, 63%);
