@@ -27,6 +27,9 @@ if (Meteor.isClient) {
   Session.setDefault('password', null);
   Session.setDefault('logged-in', false);
   Session.setDefault('creating-manifest', false);
+  Session.setDefault('viewing-manifests', false);
+  Session.setDefault('selectedCandidate', null);
+  Session.setDefault('viewing-manifest', false);
 
   // データベースにアクセスできるようにする
   Meteor.subscribe('rooms');
@@ -176,16 +179,28 @@ if (Meteor.isClient) {
     creating: function () {
       return (Session.get('creating-manifest')) ? 'creating' : '';
     },
+    viewing: function () {
+      return (Session.get('viewing-manifests')) ? 'viewing' : '';
+    },
+    selected: function () {
+      return (Session.get('viewing-manifest')) ? 'selected' : '';
+    },
     player: function () {
       var room = db.rooms.findOne(
         {name: Session.get('selectedRoom')},
         {players: 1});
       if (!room) return;
       if (!room.players) return;
-      for (var i = 0; i < room.players.length; i++) {
+      for (var i = 0; i < room.players.length; i++)
         if (room.players[i].id == Session.get('user-id'))
           return room.players[i];
-      }
+    },
+    candidates: function () {
+      var room = db.rooms.findOne({name: Session.get('selectedRoom')});
+      if (room) return room.players;
+    },
+    candidate: function () {
+      return Session.get('selectedCandidate');
     }
   });
 
@@ -200,9 +215,7 @@ if (Meteor.isClient) {
       Session.set('creating-manifest', true);
       var title = template.find('.manifest-title');
       var body = template.find('.manifest-body');
-      var room = db.rooms.findOne(
-      {name: Session.get('selectedRoom')},
-      {players: 1});
+      var room = db.rooms.findOne({name: Session.get('selectedRoom')}, {players: 1});
       var player = (function () {
         for (var i = 0; i < room.players.length; i++)
           if (room.players[i].id == Session.get('user-id'))
@@ -212,7 +225,18 @@ if (Meteor.isClient) {
       body.value = player.manifest;
     },
     'click button.view': function () {
-      Session.set('viewing', true);
+      Session.set('viewing-manifests', true);
+    },
+    'click .view-manifests button.back': function () {
+      Session.set('viewing-manifests', false);
+    },
+    'click .manifests li': function (e, template) {
+      Session.set('selectedCandidate', this);
+      Session.set('viewing-manifest', true);
+    },
+    'click .manifest button.back': function () {
+      Session.set('viewing-manifest', false);
+      Session.set('selectedCandidate', null);
     },
     'click button.opendatas': function () {
       window.open("http://www.city.yokohama.lg.jp/seisaku/seisaku/opendata/catalog.html");
@@ -316,7 +340,7 @@ if (Meteor.isServer) {
   // クライアントにデータベースを公開する
 
   Meteor.publish('rooms', function () {
-    return db.rooms.find({}, {name: 1, password: 0});
+    return db.rooms.find({}, {name: 1, players: 1, password: 0});
   });
 
   Meteor.publish('logs', function () {

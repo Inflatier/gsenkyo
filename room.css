@@ -140,3 +140,128 @@ div.create-manifest input.cancel {
   background-color: hsl(0, 0%, 71%);
   color: white;
 }
+
+/**
+*
+*/
+
+div.view-manifests {
+  position: absolute;
+  overflow-y: auto;
+  width: 100%; height: 100%;
+  top: 0;
+  left: 100%;
+  background-color: hsl(0, 0%, 100%);
+  transition: left 0.6s;
+}
+
+div.view-manifests.viewing {
+  left: 0%;
+}
+
+div.view-manifests button.back {
+  border-radius: 6px;
+  background-color: hsl(0, 0%, 100%);
+  border: 1px solid hsl(210, 100%, 50%);
+  font-size: 24px;
+  margin: 10px 4%;
+  padding: 4px;
+  color: hsl(210, 100%, 50%);
+}
+
+div.view-manifests button.back::before {
+  content: '< ';
+}
+
+div.view-manifests h1 {
+  display: block;
+  width: 92%;
+  font-weight: normal;
+  color: hsl(210, 100%, 50%);
+  border-bottom: 1px solid hsl(210, 100%, 50%);
+  padding-bottom: 10px;
+  margin: 10px auto 20px;
+  text-align: center;
+}
+
+div.view-manifests ul {
+  width: 92%;
+  padding: 0;
+  margin: 0 auto;
+  list-style: none;
+}
+
+div.view-manifests ul li {
+  padding: 4px;
+  font-size: 20px;
+  border-bottom: 1px dotted gray;
+}
+
+div.view-manifests ul li:hover {
+  background-color: hsl(210, 100%, 72%);
+}
+
+div.view-manifests ul li p {
+  color: rgb(80, 80, 88);
+}
+
+/**
+*
+*/
+
+div.manifest {
+  position: absolute;
+  overflow-y: auto;
+  width: 100%; height: 100%;
+  top: 0;
+  left: 100%;
+  background-color: hsl(0, 0%, 100%);
+  transition: left 0.6s;
+}
+
+div.manifest.selected {
+  left: 0%;
+}
+
+div.manifest h1 {
+  display: block;
+  width: 92%;
+  font-weight: normal;
+  color: hsl(210, 100%, 50%);
+  border-bottom: 1px solid hsl(210, 100%, 50%);
+  padding-bottom: 10px;
+  margin: 10px auto 20px;
+  text-align: center;
+}
+
+div.manifest button.back {
+  border-radius: 6px;
+  background-color: hsl(0, 0%, 100%);
+  border: 1px solid hsl(210, 100%, 50%);
+  font-size: 24px;
+  margin: 10px 4%;
+  padding: 4px;
+  color: hsl(210, 100%, 50%);
+}
+
+div.manifest button.back::before {
+  content: '< ';
+}
+
+div.manifest .manifest-title {
+  display: block;
+  width: 92%;
+  color: rgb(80, 80, 88);
+  padding: 6px;
+  margin: 0 auto;
+  font-size: 22px;
+}
+
+div.manifest .manifest-body {
+  font-size: 18px;
+  color: rgb(80, 80, 88);
+  line-height: 20px;
+  width: 92%;
+  margin: 0 auto;
+  padding: 6px;
+}

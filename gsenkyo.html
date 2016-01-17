@@ -18,14 +18,8 @@
     {{#if loggedIn}}
       {{> room}}
     {{/if}}
-    {{#if viewing}}
-      {{#unless voting}}
-        {{> poll}}
-      {{/unless}}
-    {{else}}
-      {{#if voting}}
-        {{> poll}}
-      {{/if}}
+    {{#if voting}}
+      {{> polling}}
     {{/if}}
   </div>
 </body>
@@ -115,30 +109,33 @@
     <form>
       <p class="name">候補者名: {{player.name}}</p>
       <label>マニフェスト名:</label>
-      <input class="manifest-title" id="manifest-title" type="text" minlength="1" required>
+      <input class="manifest-title" id="manifest-title" type="text" minlength="1" maxlength="20" required>
       <label>マニフェスト本文:</label>
       <textarea class="manifest-body" id="manifest-body" minlength="10" rows="14" required></textarea>
       <div class="buttons">
-        <input type="submit" value="完了" />
+        <input type="submit" value="保存" />
         <input type="button" class="cancel" value="キャンセル" />
       </div>
     </form>
   </div>
-</template>
-
-<template name="poll">
-  <div class="poll">
-    <h1>{{#if voting}}投票{{else}}マニフェスト一覧{{/if}}</h1>
-    <div>
-      <ul>
-        {{#each candidates}}
-          <li>
-            {{#if voting}}
-
-            {{/if}}
-          </li>
-        {{/each}}
-      </ul>
-    </div>
+  <div class="view-manifests {{viewing}}">
+    <button class="back">戻る</button>
+    <h1>マニフェスト一覧</h1>
+    <ul class="manifests">
+      {{#each candidates}}
+        <li>
+          <p>候補者名: {{name}}</p>
+          <p>タイトル: {{manifestTitle}}</p>
+        </li>
+      {{/each}}
+    </ul>
+  </div>
+  <div class="manifest {{selected}}">
+    <button class="back">マニフェスト一覧</button>
+    {{#with candidate}}
+      <h1 class="name">{{name}}</h1>
+      <h2 class="manifest-title">{{manifestTitle}}</h2>
+      <p class="manifest-body">{{manifest}}</p>
+    {{/with}}
   </div>
 </template>
