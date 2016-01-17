@@ -250,6 +250,7 @@ div.manifest button.back::before {
 
 div.manifest .manifest-title {
   display: block;
+  font-weight: bold;
   width: 92%;
   color: rgb(80, 80, 88);
   padding: 6px;
@@ -260,7 +261,7 @@ div.manifest .manifest-title {
 div.manifest .manifest-body {
   font-size: 18px;
   color: rgb(80, 80, 88);
-  line-height: 20px;
+  line-height: 28px;
   width: 92%;
   margin: 0 auto;
   padding: 6px;
