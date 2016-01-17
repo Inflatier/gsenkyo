@@ -13,6 +13,8 @@ function Player(name, id) {
     topic2: {name: '', num: null},
     topic3: {name: '', num: null},
   };
+  this.voted = 0;
+  this.didVote = false;
 };
 
 
@@ -325,10 +327,27 @@ if (Meteor.isClient) {
       Session.set('creating-manifest', false);
     },
     'click button.vote.votable': function () {
-      Session.set('voting', true);
+      var room = db.rooms.findOne({name: Session.get('selectedRoom')})
+      if (room) {
+        for (var i = 0; i < room.players.length; i++) {
+          if (room.players[i].id == Session.get('user-id')) {
+            if (room.players[i].didVote == false) {
+              Session.set('voting', true);
+            } else {
+              alert('既に投票済みです');
+            }
+          }
+        }
+      }
     },
     'click .polling button.back': function () {
       Session.set('voting', false);
+    },
+    'click .polling .candidates li': function () {
+      if (confirm(this.name + 'に投票しますか?')) {
+        Meteor.call('vote', Session.get('selectedRoom'), Session.get('user-id'), this.id);
+        Session.set('voting', false);
+      }
     }
   });
 
@@ -434,6 +453,22 @@ if (Meteor.isServer) {
     'setVotingState': function (roomName, value) {
       check(value, Boolean);
       db.rooms.update({name: roomName}, { $set: {voting: value} });
+    },
+    'vote': function (roomName, from, to) {
+      // 投票された側のvoteの値を1増やす
+      db.rooms.update(
+        {
+          name: roomName,
+          'players.id': to
+        },
+        {$inc: { 'players.$.voted': 1 } });
+      // 投票下側のdidVoteをtrueに
+      db.rooms.update(
+        {
+          name: roomName,
+          'players.id': from
+        },
+        {$set: { 'players.$.didVote': true} });
     }
   });
 
