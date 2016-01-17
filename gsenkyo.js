@@ -177,9 +177,17 @@ if (Meteor.isClient) {
       return (Session.get('creating-manifest')) ? 'creating' : '';
     },
     player: function () {
-
+      var room = db.rooms.findOne(
+        {name: Session.get('selectedRoom')},
+        {players: 1});
+      for (var i = 0; i < room.players.length; i++) {
+        if (room.players[i].id == Session.get('user-id'))
+          return room.players[i];
+      }
     }
   });
+
+  Template.room.preserve(['input', 'textarea']);
 
   Template.room.events({
     'click .exit': function () {
@@ -197,6 +205,9 @@ if (Meteor.isClient) {
     'click button.linkdata': function () {
       window.open("http://linkdata.org/work?sort=date&tag=CITY_140001#workList");
     },
+    'click .create-manifest .cancel': function () {
+      Session.set('creating-manifest', false);
+    }
   });
 
 }
