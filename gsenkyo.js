@@ -366,7 +366,7 @@ if (Meteor.isServer) {
       return id;
     },
     'destroyRoom': function (name, managerId) {
-      var room = db.findOne({name: name});
+      var room = db.rooms.findOne({name: name});
       if (room.managerId == managerId) {
         db.rooms.remove({name: name});
         return name + 'を削除しました。'
