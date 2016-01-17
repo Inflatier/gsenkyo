@@ -62,7 +62,7 @@
     <button class="view-manifests">マニフェストを見る</button>
     <button class="start-voting {{started}}">投票を開始する</button>
     <button class="stop-voting {{stopped}}">投票を締め切る</button>
-    <button class="destroy-room">選挙を消去する</button>
+    <button class="destroy-room">選挙を終了する</button>
   </div>
   <div class="view-manifests {{viewing}}">
     <button class="back">戻る</button>
@@ -179,9 +179,20 @@
       {{#each winners}}
         <li>
           <div class="voted">{{voted}}</div>
-          <div>{{name}}</div>
+          <div class="name"><span>{{name}}</span></div>
         </li>
       {{/each}}
     </ul>
+    {{#if isRoomManager}}
+      <button class="destroy-room">選挙を終了する</button>
+    {{/if}}
+  </div>
+  <div class="manifest {{selected}}">
+    <button class="back">投票結果</button>
+    {{#with winner}}
+      <h1 class="name">{{name}}</h1>
+      <h2 class="manifest-title">{{manifestTitle}}</h2>
+      <p class="manifest-body">{{manifest}}</p>
+    {{/with}}
   </div>
 </template>

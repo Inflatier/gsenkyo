@@ -380,15 +380,54 @@ if (Meteor.isClient) {
     }
   });
 
+  Template.result.created = function () {
+    Session.set('logged-in', false);
+  }
+
+  Template.result.events({
+    'click .winners li': function (e, template) {
+      Session.set('selectedWinner', this);
+      Session.set('viewing-winner', true);
+    },
+    'click .manifest button.back': function () {
+      Session.set('viewing-winner', false);
+      Session.set('selectedWinner', null);
+    },
+    'click button.destroy-room': function () {
+      var managerId = Session.get('manager-id');
+      var roomName = Session.get('selectedRoom');
+      Meteor.call('destroyRoom', roomName, managerId, function (err, result) {
+        if (err) {
+          console.error(err);
+        } else {
+          alert(result);
+        }
+        Session.setPersistent('is-room-manager', false);
+        Session.setPersistent('selectedRoom', null);
+        Session.setPersistent('manager-id', null);
+        Session.clearPersistent();
+      });
+    }
+  });
+
   Template.result.helpers({
     winners: function () {
-      var room = db.rooms.findOne(Session.get('selectedRoom'));
+      var room = db.rooms.findOne({name: Session.get('selectedRoom')});
       if (room) {
         var players = room.players.sort(function (a, b) {
-          return a.voted > b.voted;
+          return a.voted < b.voted;
         });
         return players;
       }
+    },
+    winner: function () {
+      return Session.get('selectedWinner');
+    },
+    selected: function () {
+      return (Session.get('viewing-winner')) ? 'selected' : '';
+    },
+    isRoomManager: function () {
+      return Session.get('is-room-manager');
     }
   });
 

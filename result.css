@@ -32,6 +32,40 @@ div.result ul li {
   border-bottom: 1px dotted gray;
 }
 
-div.polling ul li:hover {
+div.result ul li:hover {
   background-color: hsl(210, 100%, 72%);
+}
+
+div.result .voted {
+  display: inline-block;
+  font-size: 24px;
+}
+
+div.result .voted::after {
+  content: '票';
+  padding-left: 3px;
+  font-size: 13px;
+  vertical-align: text-bottom;
+}
+
+div.result .name {
+  display: inline-block;
+}
+
+div.result .name span {
+  font-size: 20px;
+}
+
+div.result button {
+  display: block;
+  width: 94%;
+  font-size: 19px;
+  margin: 20px auto 20px;
+  background-color: rgba(0,0,0,.0);
+  border: 1px solid hsl(210, 100%, 50%);
+  border-radius: 6px;
+  color: rgb(80, 80, 88);
+  color: hsl(210, 100%, 50%);
+  padding: 4px;
+  /*box-shadow: 0 10px 6px -7px rgba(0,0,0,.3);*/
 }
