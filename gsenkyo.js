@@ -180,6 +180,8 @@ if (Meteor.isClient) {
       var room = db.rooms.findOne(
         {name: Session.get('selectedRoom')},
         {players: 1});
+      if (!room) return;
+      if (!room.players) return;
       for (var i = 0; i < room.players.length; i++) {
         if (room.players[i].id == Session.get('user-id'))
           return room.players[i];
@@ -194,8 +196,23 @@ if (Meteor.isClient) {
       Meteor.call('logout', roomname, id);
       Session.setPersistent('logged-in', false);
     },
-    'click button.create': function () {
+    'click button.create': function (e, template) {
       Session.set('creating-manifest', true);
+      var title = template.find('.manifest-title');
+      var body = template.find('.manifest-body');
+      var room = db.rooms.findOne(
+      {name: Session.get('selectedRoom')},
+      {players: 1});
+      var player = (function () {
+        for (var i = 0; i < room.players.length; i++)
+          if (room.players[i].id == Session.get('user-id'))
+            return room.players[i];
+      })();
+      title.value = player.manifestTitle;
+      body.value = player.manifest;
+    },
+    'click button.view': function () {
+      Session.set('viewing', true);
     },
     'click button.opendatas': function () {
       window.open("http://www.city.yokohama.lg.jp/seisaku/seisaku/opendata/catalog.html");
