@@ -187,8 +187,6 @@ if (Meteor.isClient) {
     }
   });
 
-  Template.room.preserve(['input', 'textarea']);
-
   Template.room.events({
     'click .exit': function () {
       var roomname = Session.get('selectedRoom');
@@ -206,6 +204,15 @@ if (Meteor.isClient) {
       window.open("http://linkdata.org/work?sort=date&tag=CITY_140001#workList");
     },
     'click .create-manifest .cancel': function () {
+      Session.set('creating-manifest', false);
+    },
+    'submit form': function (e, template) {
+      e.preventDefault();
+      var roomName = Session.get('selectedRoom');
+      var id = Session.get('user-id');
+      var manifestTitle = template.find('.manifest-title').value;
+      var manifestBody = template.find('.manifest-body').value;
+      Meteor.call('post', roomName, id, manifestTitle, manifestBody);
       Session.set('creating-manifest', false);
     }
   });
@@ -232,6 +239,9 @@ if (Meteor.isServer) {
       if (!doc.players) return false;
       var nameOverwrap = db.rooms.findOne({name: doc.name});
       if (nameOverwrap != null) return false;
+      return true;
+    },
+    update: function (userId, doc, fieldName, modifier) {
       return true;
     }
   });
@@ -270,6 +280,19 @@ if (Meteor.isServer) {
       db.rooms.update({name: roomName}, {
         $pull: {players: {'id': id} }
       });
+    },
+    'post': function (roomName, id, manifestTitle, manifestBody) {
+      db.rooms.update(
+        {
+          name: roomName,
+          'players.id': id
+        },
+        {$set:
+          {
+            'players.$.manifest': manifestBody,
+            'players.$.manifestTitle': manifestTitle
+          }
+        });
     }
   });
 
