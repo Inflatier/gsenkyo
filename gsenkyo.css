@@ -13,7 +13,15 @@ body, section, h1, h2, h3, p, div, ul, li {
 }
 
 #app-body {
+  position: relative;
   overflow-x: hidden;
+}
+
+@media (min-width: 600px) {
+  #app-body {
+    width: 600px;
+    margin: 0 auto 0;
+  }
 }
 
 .title {
