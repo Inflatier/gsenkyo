@@ -55,7 +55,6 @@ div.create input[type=submit] {
   border: 1px solid hsl(210, 100%, 50%);
   background-color: hsl(210, 100%, 50%);
   color: white;
-  margin-right: 10px;
 }
 
 div.create input.cancel {
