@@ -20,6 +20,10 @@ body, section, h1, h2, h3, p, div, ul, li {
   overflow-y: auto;
 }
 
+input {
+  -webkit-appearance: none;
+}
+
 @media (min-width: 600px) {
   #app-body {
     width: 600px;
